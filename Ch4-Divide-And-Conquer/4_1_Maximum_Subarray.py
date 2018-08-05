@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from random import randint
+from datetime import datetime
 
 class Max_Subarray:
     #arr is the array whose maximum subarray is to be calculated,
@@ -19,7 +20,7 @@ class Max_Subarray:
         for i in range(1,self.size):
             for j in range(i,self.size+1):
                 range_sum = calculated_sums[j] - calculated_sums[i-1]
-                if range_sum > max_val:
+                if range_sum >= max_val:
                     max_val, left_index, right_index = range_sum, i-1, j-1
 
         return (max_val, left_index, right_index)
@@ -55,7 +56,18 @@ class Max_Subarray:
         else:
             return (right_sum, right_left, right_right)
 
+    """Linear Time Maximum Subarray"""
+    def linear_time_Maximum_Subarray(self):
+        max_sum, current_sum, left_index, right_index, i = self.INT_MIN, 0, -1, -1, 0
+        for j in range(0, self.size):
+            current_sum += self.arr[j]
+            if current_sum > max_sum:
+                max_sum, left_index, right_index = current_sum, i, j
 
+            if current_sum <= 0:
+                i, current_sum = j+1, 0
+
+        return (max_sum, left_index, right_index)
 
 
     def D_and_C(self):
@@ -64,6 +76,9 @@ class Max_Subarray:
 if __name__=='__main__':
     array = [randint(-10,20) for i in range(randint(15,25))]
     max_subarray = Max_Subarray(array)
+    print array
     print max_subarray.brute_force()
     print max_subarray.D_and_C()
+    print max_subarray.linear_time_Maximum_Subarray()
+
 
