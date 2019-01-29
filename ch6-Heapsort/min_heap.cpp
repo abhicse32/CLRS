@@ -22,7 +22,7 @@ class MinPriorityQueue: public MinHeap{
         MinPriorityQueue(vi arr): MinHeap(arr){}
         MinPriorityQueue(int* arr, int n): MinHeap(arr, n){}
         void insert(int );
-        int get_minimum();
+        int get_min_key();
         int pop_min();
         void decrease_key(int, int);     
 };
@@ -60,7 +60,7 @@ void MinHeap::heapsort(){
  * Min Priority Queue implementation
  * */
 
-int MinPriorityQueue::get_minimum(){
+int MinPriorityQueue::get_min_key(){
     try{
         if(heap.size() < 1)
             throw "Queue has no elements";
@@ -91,13 +91,18 @@ void MinPriorityQueue::decrease_key(int index, int key){
         if(index >= heap.size() or heap[index] <= key)
             throw "Invalid operation";
         heap[index] = key;
-        for(int p = parent(index); index > 0 && heap[p] > heap[index]; swap(heap[index], heap[p]), index = p, p = parent(p));
+        for(int p = parent(index); index >= 0 && heap[p] > heap[index]; 
+                swap(heap[index], heap[p]), index = p, p = parent(p));
     }catch(const char* err_str){
         cout << err_str <<endl;
     }
 }
 
 void MinPriorityQueue::insert(int key){
-    heap.push_back(INT_MAX);
-    decrease_key(heap.size()-1, key); 
+    if(heap.empty())
+        heap.push_back(key);
+    else{
+        heap.push_back(INT_MAX);
+        decrease_key(heap.size() - 1, key); 
+    }
 }
