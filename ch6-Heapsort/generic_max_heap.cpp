@@ -10,6 +10,7 @@ class MaxHeap: public Heap<T>{
         void max_heapify(int, int);
         void build_maxheap();
         void heapsort();
+        void heap_delete(int);
 };
 
 template<class T>
@@ -45,5 +46,16 @@ void MaxHeap<T>::heapsort(){
     }
 }
 
-
-
+template<typename T>
+void MaxHeap<T>::heap_delete(int index){
+   try{
+       int size = arr.size();
+       if(index < 0 || index >= size)
+           throw "Index out of range";
+        arr[index] = arr[size - 1];
+        arr.pop_back();
+        max_heapify(index, size -1); 
+   }catch(const char* error){
+   
+   } 
+}

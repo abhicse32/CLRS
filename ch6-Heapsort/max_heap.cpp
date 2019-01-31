@@ -14,6 +14,7 @@ class MaxHeap: public Heap{
         MaxHeap(): Heap(){}
         void max_heapify(int, int);
         void build_maxheap();
+        void del_at_index(int);
         // Sorts the heaps in ascending order
         void heapsort();
 };
@@ -55,6 +56,17 @@ void MaxHeap::heapsort(){
    }
 }
 
+void MaxHeap::del_at_index(int index){
+    try{
+        if(index >= heap.size() || index < 0)
+            throw "Index out of range";
+        heap[index] = heap[heap.size() - 1];
+        heap.pop_back();
+        max_heapify(index, heap.size());  
+    }catch(const char* err_msg){
+        cout <<"Error: " <<err_msg << endl;
+    } 
+}
 /*
  * Max Priority Queue implementation
  * */

@@ -13,6 +13,7 @@ class MinHeap: public Heap{
         MinHeap():Heap(){}
         void min_heapify(int, int);
         void build_minheap();
+        void del_at_index(int);
         // this will sort the array/heap in descending order
         void heapsort();
 };
@@ -55,7 +56,17 @@ void MinHeap::heapsort(){
     }
 }
 
-
+void MinHeap::del_at_index(int index){
+    try{
+        if(index >= heap.size() || index < 0)
+            throw "Index out of range";
+        heap[index] = heap[heap.size() - 1];
+        heap.pop_back();
+        min_heapify(index, heap.size());
+    }catch(const char* err_msg){
+        cout << "Error: "<< err_msg <<endl; 
+    }
+}
 /*
  * Min Priority Queue implementation
  * */
