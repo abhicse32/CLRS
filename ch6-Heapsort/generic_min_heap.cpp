@@ -109,7 +109,7 @@ void MinPriorityQueue<T>::decrease_key(int index, T val){
         vector<T>& arr  = MinHeap<T>::arr;
         if(val >= arr[index])
             throw string("Existing object is smaller"); 
-        for(int p = parent(index); index > 0 && arr[index] > arr[p]; index = p, p = parent(p))
+        for(int p = parent(index); index > 0 && val < arr[p]; index = p, p = parent(p))
             arr[index] = arr[p];
         arr[index] = val;
 
