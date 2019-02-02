@@ -3,25 +3,26 @@
 
 class MinHeap: public Heap{
     public:
-        MinHeap(vi arr):Heap(arr){
-            build_minheap();
-        }
-        MinHeap(int* arr, int n):Heap(arr, n){
-            build_minheap();
-        }
-
+        MinHeap(vi arr):Heap(arr){}
+        MinHeap(int* arr, int n):Heap(arr, n){}
         MinHeap():Heap(){}
+
         void min_heapify(int, int);
         void build_minheap();
-        void del_at_index(int);
+        int del_at_index(int);
         // this will sort the array/heap in descending order
         void heapsort();
 };
 
 class MinPriorityQueue: public MinHeap{
     public:
-        MinPriorityQueue(vi arr): MinHeap(arr){}
-        MinPriorityQueue(int* arr, int n): MinHeap(arr, n){}
+        MinPriorityQueue(vi arr): MinHeap(arr){
+            build_minheap();
+        }
+        MinPriorityQueue(int* arr, int n): MinHeap(arr, n){
+            build_minheap();
+        }
+
         void insert(int );
         int get_min_key();
         int pop_min();
@@ -56,16 +57,19 @@ void MinHeap::heapsort(){
     }
 }
 
-void MinHeap::del_at_index(int index){
+int MinHeap::del_at_index(int index){
+    int val = INT_MAX;
     try{
         if(index >= heap.size() || index < 0)
             throw "Index out of range";
+        val = heap[index];
         heap[index] = heap[heap.size() - 1];
         heap.pop_back();
         min_heapify(index, heap.size());
     }catch(const char* err_msg){
         cout << "Error: "<< err_msg <<endl; 
     }
+    return val;
 }
 /*
  * Min Priority Queue implementation
@@ -83,18 +87,7 @@ int MinPriorityQueue::get_min_key(){
 }
 
 int MinPriorityQueue::pop_min(){
-   try{
-       if(heap.size() < 1)
-           throw "Can't pop an element from an empty queue";
-       int min = heap[0];
-        heap[0] = heap[heap.size()-1];
-        heap.pop_back();
-        min_heapify(0, heap.size());
-        return min;
-   }catch(const char* error_msg){
-        cout << "Error: " << error_msg << endl;
-   }
-   return INT_MAX;
+    return del_at_index(0);
 }
 
 void MinPriorityQueue::decrease_key(int index, int key){
