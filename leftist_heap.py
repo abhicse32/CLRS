@@ -1,4 +1,5 @@
 class LeftistHeap:
+    # implementation of Min-Heap
     class Node:
         def __init__(self, val):
             self.data = val
@@ -29,6 +30,33 @@ class LeftistHeap:
     
     def insert(self, val):
         self.root = self.merge(self.root, self.Node(val))
+    
+    def decrease_key_util(self, node, key):
+        if node:
+            if node.data == key: return node, node
+            ret_node = None 
+            l_node, ret_node = self.decrease_key_util(node.left, key) 
+            if ret_node:
+                if ret_node == l_node: node.left = None 
+            else:
+                r_node, ret_node = self.decrease_key_util(node.right, key)
+                if ret_node:
+                    if ret_node == r_node: node.right = None
+
+            l_npl, r_npl = LeftistHeap.get_npl(node.left), LeftistHeap.get_npl(node.right)
+            node.npl = min(l_npl, r_npl) + 1
+            if l_npl < r_npl:
+                node.left, node.right = node.right, node.left
+            return node, ret_node
+
+        return node, None
+
+    def decrease_key(self, curr_key, new_key):
+        if new_key >= curr_key:
+            raise Exception("New key is greater than or equal to the existing key")
+        _, node = self.decrease_key_util(self.root, curr_key)
+        node.data = new_key
+        self.root = self.merge(self.root, node)
 
     def print_levelwise(self):
         if not self.root: return
@@ -45,3 +73,13 @@ class LeftistHeap:
     def delete_min(self):
         self.root = self.merge(self.root.right, self.root.left)
 
+if __name__ =='__main__':
+    arr = [5,1,98,34,-45,78,32,-21]
+    heap = LeftistHeap()
+    for el in arr:
+        heap.insert(el)
+
+    heap.print_levelwise()
+    print
+    heap.decrease_key(34, -12)
+    heap.print_levelwise()
