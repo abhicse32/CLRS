@@ -55,8 +55,11 @@ class LeftistHeap:
         if new_key >= curr_key:
             raise Exception("New key is greater than or equal to the existing key")
         _, node = self.decrease_key_util(self.root, curr_key)
+        if not node:
+            raise Exception("Key to be decreased not found!")
         node.data = new_key
-        self.root = self.merge(self.root, node)
+        if node != self.root:
+            self.root = self.merge(self.root, node)
 
     def print_levelwise(self):
         if not self.root: return
@@ -81,5 +84,5 @@ if __name__ =='__main__':
 
     heap.print_levelwise()
     print
-    heap.decrease_key(34, -12)
+    heap.decrease_key(-45, -112)
     heap.print_levelwise()
